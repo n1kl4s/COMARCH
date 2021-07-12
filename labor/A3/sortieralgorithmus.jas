@@ -1,33 +1,25 @@
 //========================================================================================
-// selectionsort-musterloesung.jas:
+// sortieralgorithmus.jas:
 // Niklas Lampe und Thade Struckhoff, 2021
 // COMARCH - Versuchsaufgabe 3
-// Musterlösung
 //
-// Beschreibung:
-//    Lösung des in Java vorgegebenen Sortieralgorithmus 'Selection Sort' durch ein
-//    IJJVM-Programm.
+// Bedienung:
+//    !!!!!!!!!!!! TODO !!!!!!!!!!!!
 //    
 //========================================================================================
 
 .constant
-OBJREF 0x40				// benoetigt fuer Methodenaufrufe
+OBJREF 0x40				      // benoetigt fuer Methodenaufrufe
 .end-constant
 
 
 .main                   	      // start des Programms
 .var					      // Variablen fuer das Hauptprogram
-
 a0                                  // kleinster Wert
 a1                                  
 a2                                  
 a3                                  
 a4                                  // groester Wert
-
-i
-j
-currMinIndex
-
 .end-var
 start: LDC_W OBJREF
       INVOKEVIRTUAL printEingabeText
@@ -35,32 +27,32 @@ start: LDC_W OBJREF
       LDC_W OBJREF
       INVOKEVIRTUAL getnum
       ISTORE a0
-      BIPUSH 0x20       // print "SP"
-      BIPUSH 0x2C       // print ","
+      BIPUSH 0x20                   // print "SP"
+      BIPUSH 0x2C                   // print ","
       OUT
       OUT
       
       LDC_W OBJREF
       INVOKEVIRTUAL getnum
       ISTORE a1
-      BIPUSH 0x20       // print "SP"
-      BIPUSH 0x2C       // print ","
+      BIPUSH 0x20                   // print "SP"
+      BIPUSH 0x2C                   // print ","
       OUT
       OUT
 
       LDC_W OBJREF
       INVOKEVIRTUAL getnum
       ISTORE a2
-      BIPUSH 0x20       // print "SP"
-      BIPUSH 0x2C       // print ","
+      BIPUSH 0x20                   // print "SP"
+      BIPUSH 0x2C                   // print ","
       OUT
       OUT
       
       LDC_W OBJREF
       INVOKEVIRTUAL getnum
       ISTORE a3
-      BIPUSH 0x20       // print "SP"
-      BIPUSH 0x2C       // print ","
+      BIPUSH 0x20                   // print "SP"
+      BIPUSH 0x2C                   // print ","
       OUT
       OUT
 
@@ -71,196 +63,11 @@ start: LDC_W OBJREF
 //////////////////////////////////////////////
 //             Sortierung Start             //
 //--------------------\/--------------------//
-      BIPUSH 0x0              // int i = 0
-      ISTORE i
-sort: ILOAD i                 // data.length-1
-      BIPUSH 0x4
-      IF_ICMPEQ sortEnd
-      ILOAD i
-      DUP
-      ISTORE currMinIndex     // currMinIndex = i;
-      ISTORE j
-      IINC j 1                // int j = i + 1;
-inner: ILOAD j                // j < data.length
-      BIPUSH 0x5
-      ISUB
-      IFEQ innerEnd
-
-      ILOAD currMinIndex            // lade data[currMinIndex]
-      BIPUSH 0x0
-      IF_ICMPEQ currMinIndex_a0
-      ILOAD currMinIndex
-      BIPUSH 0x1
-      IF_ICMPEQ currMinIndex_a1
-      ILOAD currMinIndex
-      BIPUSH 0x2
-      IF_ICMPEQ currMinIndex_a2
-      ILOAD currMinIndex
-      BIPUSH 0x3
-      IF_ICMPEQ currMinIndex_a3
-      ILOAD currMinIndex
-      BIPUSH 0x4
-      IF_ICMPEQ currMinIndex_a4
-      ERR                           // sollte niemals hier ankommen
-inner2: ILOAD j                     // lade data[j]
-      BIPUSH 0x0
-      IF_ICMPEQ j_a0
-      ILOAD j
-      BIPUSH 0x1
-      IF_ICMPEQ j_a1
-      ILOAD j
-      BIPUSH 0x2
-      IF_ICMPEQ j_a2
-      ILOAD j
-      BIPUSH 0x3
-      IF_ICMPEQ j_a3
-      ILOAD j
-      BIPUSH 0x4
-      IF_ICMPEQ j_a4
-      ERR                           // sollte niemals hier ankommen
-inner3: ISUB                        // if (data[currMinIndex] > data[j])
-      DUP
-      IFEQ inner4
-      IFLT inner5
-      ILOAD j                       //    currMinIndex = j;
-      ISTORE currMinIndex
-      GOTO inner5
-inner4: POP                         // POP dupliziertes Subtraktionsergebnis
-inner5: IINC j 1                    // j++
-      GOTO inner
-
-currMinIndex_a0: ILOAD a0
-      GOTO inner2
-currMinIndex_a1: ILOAD a1
-      GOTO inner2
-currMinIndex_a2: ILOAD a2
-      GOTO inner2
-currMinIndex_a3: ILOAD a3
-      GOTO inner2
-currMinIndex_a4: ILOAD a4
-      GOTO inner2
-
-j_a0: ILOAD a0
-      GOTO inner3
-j_a1: ILOAD a1
-      GOTO inner3
-j_a2: ILOAD a2
-      GOTO inner3
-j_a3: ILOAD a3
-      GOTO inner3
-j_a4: ILOAD a4
-      GOTO inner3
-
-innerEnd: ILOAD i                     // lade data[i]
-      BIPUSH 0x0
-      IF_ICMPEQ i_a0
-      ILOAD i
-      BIPUSH 0x1
-      IF_ICMPEQ i_a1
-      ILOAD i
-      BIPUSH 0x2
-      IF_ICMPEQ i_a2
-      ILOAD i
-      BIPUSH 0x3
-      IF_ICMPEQ i_a3
-      ILOAD i
-      BIPUSH 0x4
-      IF_ICMPEQ i_a4
-      ERR                           // sollte niemals hier ankommen                   
-sort2: ILOAD currMinIndex           // lade data[currMinIndex]
-      BIPUSH 0x0
-      IF_ICMPEQ currMinIndex2_a0
-      ILOAD currMinIndex
-      BIPUSH 0x1
-      IF_ICMPEQ currMinIndex2_a1
-      ILOAD currMinIndex
-      BIPUSH 0x2
-      IF_ICMPEQ currMinIndex2_a2
-      ILOAD currMinIndex
-      BIPUSH 0x3
-      IF_ICMPEQ currMinIndex2_a3
-      ILOAD currMinIndex
-      BIPUSH 0x4
-      IF_ICMPEQ currMinIndex2_a4
-      ERR                           // sollte niemals hier ankommen
-sort3: ILOAD i                      // data[i] = data[currMinIndex];
-      BIPUSH 0x0
-      IF_ICMPEQ i_store_a0
-      ILOAD i
-      BIPUSH 0x1
-      IF_ICMPEQ i_store_a1
-      ILOAD i
-      BIPUSH 0x2
-      IF_ICMPEQ i_store_a2
-      ILOAD i
-      BIPUSH 0x3
-      IF_ICMPEQ i_store_a3
-      ILOAD i
-      BIPUSH 0x4
-      IF_ICMPEQ i_store_a4
-      ERR                           // sollte niemals hier ankommen
-sort4: ILOAD currMinIndex           // data[currMinIndex] = data[i]; (via tmp)
-      BIPUSH 0x0
-      IF_ICMPEQ currMinIndex_store_a0
-      ILOAD currMinIndex
-      BIPUSH 0x1
-      IF_ICMPEQ currMinIndex_store_a1
-      ILOAD currMinIndex
-      BIPUSH 0x2
-      IF_ICMPEQ currMinIndex_store_a2
-      ILOAD currMinIndex
-      BIPUSH 0x3
-      IF_ICMPEQ currMinIndex_store_a3
-      ILOAD currMinIndex
-      BIPUSH 0x4
-      IF_ICMPEQ currMinIndex_store_a4
-      ERR                           // sollte niemals hier ankommen
-sort5: IINC i 1                     // i++
-      GOTO sort
-
-i_a0: ILOAD a0
-      GOTO sort2
-i_a1: ILOAD a1
-      GOTO sort2
-i_a2: ILOAD a2
-      GOTO sort2
-i_a3: ILOAD a3
-      GOTO sort2
-i_a4: ILOAD a4
-      GOTO sort2
-
-currMinIndex2_a0: ILOAD a0
-      GOTO sort3
-currMinIndex2_a1: ILOAD a1
-      GOTO sort3
-currMinIndex2_a2: ILOAD a2
-      GOTO sort3
-currMinIndex2_a3: ILOAD a3
-      GOTO sort3
-currMinIndex2_a4: ILOAD a4
-      GOTO sort3
-
-i_store_a0: ISTORE a0
-      GOTO sort4
-i_store_a1: ISTORE a1
-      GOTO sort4
-i_store_a2: ISTORE a2
-      GOTO sort4
-i_store_a3: ISTORE a3
-      GOTO sort4
-i_store_a4: ISTORE a4
-      GOTO sort4
-
-currMinIndex_store_a0: ISTORE a0
-      GOTO sort5
-currMinIndex_store_a1: ISTORE a1
-      GOTO sort5
-currMinIndex_store_a2: ISTORE a2
-      GOTO sort5
-currMinIndex_store_a3: ISTORE a3
-      GOTO sort5
-currMinIndex_store_a4: ISTORE a4
-      GOTO sort5
+      
+// hier Ihre Loesung rein 
+// (etwaige lokale Variablen dürfen hinzugefügt 
+// werden. Die restliche Struktur darf nicht
+// veraendert werden.)
 
 //--------------------/\--------------------//
 //             Sortierung ende              //
@@ -283,9 +90,9 @@ sortEnd: LDC_W OBJREF
       ILOAD a4
       INVOKEVIRTUAL print
 
-      BIPUSH 0xa              // print CR
+      BIPUSH 0xa                    // print CR
       OUT 
-      GOTO start              // restart Program
+      GOTO start                    // restart Program
 .end-main
 
 
