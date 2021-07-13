@@ -1,0 +1,233 @@
+//================================================================================
+//  rechenOperation.jas
+//	COMARCH - Versuchsaufgabe 1
+//
+//  Beschreibung:
+//    Programm zur Berechnung der Formel a + b + c - d - e
+//
+//================================================================================
+
+.constant
+OBJREF 0x40			
+.end-constant
+
+
+.main				
+
+.var				
+a
+b
+c
+d
+e
+sum
+diff
+sum2
+total
+.end-var
+
+start: BIPUSH 0x0		
+    ISTORE a
+	LDC_W OBJREF
+	BIPUSH 52					
+	BIPUSH 48
+	ISUB
+	ILOAD a
+	INVOKEVIRTUAL fillVariable
+	ISTORE a
+	LDC_W OBJREF
+	BIPUSH 65					
+	BIPUSH 55
+	ISUB
+	ILOAD a
+	INVOKEVIRTUAL fillVariable
+	ISTORE a
+	BIPUSH 0x0		
+    ISTORE b
+	LDC_W OBJREF
+	BIPUSH 50		
+	BIPUSH 48
+	ISUB
+	ILOAD b
+	INVOKEVIRTUAL fillVariable
+	ISTORE b
+	LDC_W OBJREF
+	BIPUSH 68		
+	BIPUSH 55
+	ISUB
+	ILOAD b
+	INVOKEVIRTUAL fillVariable
+	ISTORE b
+	BIPUSH 0x0		
+    ISTORE c
+	LDC_W OBJREF
+	BIPUSH 65				
+	BIPUSH 55
+	ISUB
+	ILOAD c
+	INVOKEVIRTUAL fillVariable
+	ISTORE c
+	LDC_W OBJREF
+	BIPUSH 69					
+	BIPUSH 55
+	ISUB
+	ILOAD c
+	INVOKEVIRTUAL fillVariable
+	ISTORE c
+	BIPUSH 0x0		
+    ISTORE d
+	LDC_W OBJREF
+	BIPUSH 50					
+	BIPUSH 48
+	ISUB
+	ILOAD d
+	INVOKEVIRTUAL fillVariable
+	ISTORE d
+	LDC_W OBJREF
+	BIPUSH 48					
+	BIPUSH 48
+	ISUB
+	ILOAD d
+	INVOKEVIRTUAL fillVariable
+	ISTORE d
+	BIPUSH 0x0		
+    ISTORE e
+	LDC_W OBJREF
+	BIPUSH 50				
+	BIPUSH 48
+	ISUB
+	ILOAD e
+	INVOKEVIRTUAL fillVariable
+	ISTORE e
+	LDC_W OBJREF
+	BIPUSH 57				
+	BIPUSH 48
+	ISUB
+	ILOAD e
+	INVOKEVIRTUAL fillVariable
+	ISTORE e
+	ILOAD a
+	ILOAD b
+	IADD
+	ISTORE sum
+	ILOAD c
+	ILOAD d
+	ISUB
+	ISTORE diff	
+	ILOAD sum
+	ILOAD diff
+	IADD
+	ISTORE sum2	
+	ILOAD sum2
+	ILOAD e
+	ISUB
+	ISTORE total
+	LDC_W OBJREF
+	ILOAD total		
+	INVOKEVIRTUAL print
+.end-main
+
+.method fillVariable( a, zahl )
+
+start:	ILOAD a
+	ILOAD zahl
+	DUP
+	IADD
+	DUP
+	IADD
+	DUP
+	IADD
+	DUP
+	IADD
+	IADD			
+	IRETURN		
+.end-method
+
+.method print( total ) 		
+				
+				
+				
+.var
+place
+index
+.end-var
+
+print: 	BIPUSH 0x9	
+	ISTORE index
+	BIPUSH 0x1		
+	ISTORE place
+print1:	BIPUSH 0x0
+	ILOAD index		
+	BIPUSH 0x1
+	ISUB
+	DUP
+	IFEQ pall		
+	ISTORE index
+	ILOAD total		
+	ILOAD place		
+	IAND			
+	IFEQ print2	
+	BIPUSH 0x1		
+	IADD
+print2: ILOAD place	
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			
+	IFEQ print3		
+	BIPUSH 0x2		
+	IADD	
+print3: ILOAD place		
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			
+	IFEQ print4		
+	BIPUSH 0x4		
+	IADD	
+print4: ILOAD place		
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			
+	IFEQ print5		
+	BIPUSH 0x8		
+	IADD	
+print5: ILOAD place		
+	DUP
+	IADD
+	ISTORE place
+	GOTO print1
+	
+pall:   POP			
+	POP
+	BIPUSH 0x9
+	ISTORE index
+pall1:	ILOAD index		
+	BIPUSH 0x1
+	ISUB
+	DUP
+	IFEQ return	
+	ISTORE index
+	DUP
+	BIPUSH 0xa		
+	ISUB
+	IFLT pall2
+	BIPUSH 0x37		
+	IADD
+	OUT			
+	GOTO pall1		
+pall2:	BIPUSH 0x30		
+	IADD
+	OUT			
+	GOTO pall1		
+return:	BIPUSH 0xa		
+	OUT
+	IRETURN			
+.end-method
