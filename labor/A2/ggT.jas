@@ -12,7 +12,7 @@
 //    - zweite Zahl eingeben (bis zu 4-stellig hexadezimal, mit Grossbuchstaben A-F)
 //    - Enter druecken
 //    - Das Ergebnis wird angezeigt
-//	- es sind 6 Fehler vorhanden. Innerhalb der Hauptmethode Methode 'main' und der 
+//	  - es sind 5 Fehler vorhanden. Innerhalb der Hauptmethode Methode 'main' und der 
 //      Hilfs-Methode 'print' sind KEINE enthalten!
 //========================================================================================
 
