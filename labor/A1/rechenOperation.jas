@@ -28,6 +28,14 @@ total
 
 start: BIPUSH 0x0		
     ISTORE a
+	BIPUSH 0x0		
+    ISTORE b
+	BIPUSH 0x0		
+    ISTORE c
+	BIPUSH 0x0		
+    ISTORE d
+	BIPUSH 0x0		
+    ISTORE e
 	LDC_W OBJREF
 	BIPUSH 0x4
 	ILOAD a
@@ -38,8 +46,6 @@ start: BIPUSH 0x0
 	ILOAD a
 	INVOKEVIRTUAL fillVariable
 	ISTORE a
-	BIPUSH 0x0		
-    ISTORE b
 	LDC_W OBJREF
 	BIPUSH 0x2
 	ILOAD b
@@ -50,8 +56,6 @@ start: BIPUSH 0x0
 	ILOAD b
 	INVOKEVIRTUAL fillVariable
 	ISTORE b
-	BIPUSH 0x0		
-    ISTORE c
 	LDC_W OBJREF
 	BIPUSH 0xA
 	ILOAD c
@@ -62,8 +66,6 @@ start: BIPUSH 0x0
 	ILOAD c
 	INVOKEVIRTUAL fillVariable
 	ISTORE c
-	BIPUSH 0x0		
-    ISTORE d
 	LDC_W OBJREF
 	BIPUSH 0x2
 	ILOAD d
@@ -74,8 +76,6 @@ start: BIPUSH 0x0
 	ILOAD d
 	INVOKEVIRTUAL fillVariable
 	ISTORE d
-	BIPUSH 0x0		
-    ISTORE e
 	LDC_W OBJREF
 	BIPUSH 0x2
 	ILOAD e
