@@ -1,2 +1,3 @@
 labor/*/*.class
 labor/*/*.ijvm
+!labor/A1/echo.ijvm

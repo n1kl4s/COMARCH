@@ -270,15 +270,31 @@ sortEnd: LDC_W OBJREF
       LDC_W OBJREF               
       ILOAD a0
       INVOKEVIRTUAL print
+      BIPUSH 0x20                   // print "SP"
+      BIPUSH 0x2C                   // print ","
+      OUT
+      OUT
       LDC_W OBJREF
       ILOAD a1
       INVOKEVIRTUAL print
+      BIPUSH 0x20                   // print "SP"
+      BIPUSH 0x2C                   // print ","
+      OUT
+      OUT
       LDC_W OBJREF
       ILOAD a2
       INVOKEVIRTUAL print
+      BIPUSH 0x20                   // print "SP"
+      BIPUSH 0x2C                   // print ","
+      OUT
+      OUT
       LDC_W OBJREF
       ILOAD a3
       INVOKEVIRTUAL print
+      BIPUSH 0x20                   // print "SP"
+      BIPUSH 0x2C                   // print ","
+      OUT
+      OUT
       LDC_W OBJREF
       ILOAD a4
       INVOKEVIRTUAL print
@@ -458,9 +474,7 @@ pall2: BIPUSH 0x30		// convert Zeichen in "0"-"9" umwandeln
 	IADD
 	OUT			      // print Zeichen
 	GOTO pall1		      // goto pall1 (naechstes Zeichen vorbereiten & ausgeben)
-return: BIPUSH 0x20		// print SP
-	OUT
-	IRETURN			// kein Rueckgabewert
+return: IRETURN			// kein Rueckgabewert
 .end-method
 
 .method printEingabeText()        	

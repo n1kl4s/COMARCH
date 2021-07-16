@@ -12,7 +12,7 @@
 //    - zweite Zahl eingeben (bis zu 4-stellig hexadezimal, mit Grossbuchstaben A-F)
 //    - Enter druecken
 //    - Das Ergebnis wird angezeigt
-//	- es sind 6 Fehler vorhanden. Innerhalb der Hauptmethode Methode 'main' und der 
+//	  - es sind 5 Fehler vorhanden. Innerhalb der Hauptmethode Methode 'main' und der 
 //      Hilfs-Methode 'print' sind KEINE enthalten!
 //========================================================================================
 
@@ -147,10 +147,13 @@ return: ILOAD rest
 .method getnum()              
 .var                    	
 a
+k
 .end-var
 
-	BIPUSH 0x0			
+	BIPUSH 0x0		
+      DUP
       ISTORE a
+      ISTORE k
 geta:	IN				
 	DUP				
 	BIPUSH 0xa			
@@ -192,10 +195,17 @@ geta3: ILOAD a
 	IADD
 	IADD				
 	ISTORE a
+      IINC k 1          	
+      ILOAD k
+      BIPUSH 0x4
+      IF_ICMPEQ return		
+	GOTO geta
 	GOTO geta			
 geta4: POP				
 	GOTO geta			
-return: ILOAD a			
+return: ILOAD k         	
+      IFEQ geta
+      ILOAD a			
 	IRETURN			
 .end-method
 
