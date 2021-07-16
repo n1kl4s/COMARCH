@@ -127,10 +127,10 @@ start: BIPUSH 0x0
 	INVOKEVIRTUAL print
 .end-main
 
-.method fillVariable( a, zahl )
+.method fillVariable( zahl, a )
 
-start:	ILOAD a
-	ILOAD zahl
+start:	ILOAD zahl
+	ILOAD a
 	DUP
 	IADD
 	DUP
