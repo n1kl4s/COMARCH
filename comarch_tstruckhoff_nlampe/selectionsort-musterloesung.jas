@@ -1,0 +1,524 @@
+//========================================================================================
+// selectionsort-musterloesung.jas:
+// Niklas Lampe und Thade Struckhoff, 2021
+// COMARCH - Versuchsaufgabe 3
+// Musterlösung
+//
+// Beschreibung:
+//    Lösung des in Java vorgegebenen Sortieralgorithmus 'Selection Sort' durch ein
+//    IJJVM-Programm.
+//    
+//========================================================================================
+
+.constant
+OBJREF 0x40				// benoetigt fuer Methodenaufrufe
+.end-constant
+
+
+.main                   	      // start des Programms
+.var					      // Variablen fuer das Hauptprogram
+
+a0                                  // kleinster Wert
+a1                                  
+a2                                  
+a3                                  
+a4                                  // groester Wert
+
+i
+j
+currMinIndex
+
+.end-var
+start: LDC_W OBJREF
+      INVOKEVIRTUAL printEingabeText
+
+      LDC_W OBJREF
+      INVOKEVIRTUAL getnum
+      ISTORE a0
+      BIPUSH 0x20       // print "SP"
+      BIPUSH 0x2C       // print ","
+      OUT
+      OUT
+      
+      LDC_W OBJREF
+      INVOKEVIRTUAL getnum
+      ISTORE a1
+      BIPUSH 0x20       // print "SP"
+      BIPUSH 0x2C       // print ","
+      OUT
+      OUT
+
+      LDC_W OBJREF
+      INVOKEVIRTUAL getnum
+      ISTORE a2
+      BIPUSH 0x20       // print "SP"
+      BIPUSH 0x2C       // print ","
+      OUT
+      OUT
+      
+      LDC_W OBJREF
+      INVOKEVIRTUAL getnum
+      ISTORE a3
+      BIPUSH 0x20       // print "SP"
+      BIPUSH 0x2C       // print ","
+      OUT
+      OUT
+
+      LDC_W OBJREF
+      INVOKEVIRTUAL getnum
+      ISTORE a4
+
+//////////////////////////////////////////////
+//             Sortierung Start             //
+//--------------------\/--------------------//
+      BIPUSH 0x0              // int i = 0
+      ISTORE i
+sort: ILOAD i                 // data.length-1
+      BIPUSH 0x4
+      IF_ICMPEQ sortEnd
+      ILOAD i
+      DUP
+      ISTORE currMinIndex     // currMinIndex = i;
+      ISTORE j
+      IINC j 1                // int j = i + 1;
+inner: ILOAD j                // j < data.length
+      BIPUSH 0x5
+      ISUB
+      IFEQ innerEnd
+
+      ILOAD currMinIndex            // lade data[currMinIndex]
+      BIPUSH 0x0
+      IF_ICMPEQ currMinIndex_a0
+      ILOAD currMinIndex
+      BIPUSH 0x1
+      IF_ICMPEQ currMinIndex_a1
+      ILOAD currMinIndex
+      BIPUSH 0x2
+      IF_ICMPEQ currMinIndex_a2
+      ILOAD currMinIndex
+      BIPUSH 0x3
+      IF_ICMPEQ currMinIndex_a3
+      ILOAD currMinIndex
+      BIPUSH 0x4
+      IF_ICMPEQ currMinIndex_a4
+      ERR                           // sollte niemals hier ankommen
+inner2: ILOAD j                     // lade data[j]
+      BIPUSH 0x0
+      IF_ICMPEQ j_a0
+      ILOAD j
+      BIPUSH 0x1
+      IF_ICMPEQ j_a1
+      ILOAD j
+      BIPUSH 0x2
+      IF_ICMPEQ j_a2
+      ILOAD j
+      BIPUSH 0x3
+      IF_ICMPEQ j_a3
+      ILOAD j
+      BIPUSH 0x4
+      IF_ICMPEQ j_a4
+      ERR                           // sollte niemals hier ankommen
+inner3: ISUB                        // if (data[currMinIndex] > data[j])
+      DUP
+      IFEQ inner4
+      IFLT inner5
+      ILOAD j                       //    currMinIndex = j;
+      ISTORE currMinIndex
+      GOTO inner5
+inner4: POP                         // POP dupliziertes Subtraktionsergebnis
+inner5: IINC j 1                    // j++
+      GOTO inner
+
+currMinIndex_a0: ILOAD a0
+      GOTO inner2
+currMinIndex_a1: ILOAD a1
+      GOTO inner2
+currMinIndex_a2: ILOAD a2
+      GOTO inner2
+currMinIndex_a3: ILOAD a3
+      GOTO inner2
+currMinIndex_a4: ILOAD a4
+      GOTO inner2
+
+j_a0: ILOAD a0
+      GOTO inner3
+j_a1: ILOAD a1
+      GOTO inner3
+j_a2: ILOAD a2
+      GOTO inner3
+j_a3: ILOAD a3
+      GOTO inner3
+j_a4: ILOAD a4
+      GOTO inner3
+
+innerEnd: ILOAD i                     // lade data[i]
+      BIPUSH 0x0
+      IF_ICMPEQ i_a0
+      ILOAD i
+      BIPUSH 0x1
+      IF_ICMPEQ i_a1
+      ILOAD i
+      BIPUSH 0x2
+      IF_ICMPEQ i_a2
+      ILOAD i
+      BIPUSH 0x3
+      IF_ICMPEQ i_a3
+      ILOAD i
+      BIPUSH 0x4
+      IF_ICMPEQ i_a4
+      ERR                           // sollte niemals hier ankommen                   
+sort2: ILOAD currMinIndex           // lade data[currMinIndex]
+      BIPUSH 0x0
+      IF_ICMPEQ currMinIndex2_a0
+      ILOAD currMinIndex
+      BIPUSH 0x1
+      IF_ICMPEQ currMinIndex2_a1
+      ILOAD currMinIndex
+      BIPUSH 0x2
+      IF_ICMPEQ currMinIndex2_a2
+      ILOAD currMinIndex
+      BIPUSH 0x3
+      IF_ICMPEQ currMinIndex2_a3
+      ILOAD currMinIndex
+      BIPUSH 0x4
+      IF_ICMPEQ currMinIndex2_a4
+      ERR                           // sollte niemals hier ankommen
+sort3: ILOAD i                      // data[i] = data[currMinIndex];
+      BIPUSH 0x0
+      IF_ICMPEQ i_store_a0
+      ILOAD i
+      BIPUSH 0x1
+      IF_ICMPEQ i_store_a1
+      ILOAD i
+      BIPUSH 0x2
+      IF_ICMPEQ i_store_a2
+      ILOAD i
+      BIPUSH 0x3
+      IF_ICMPEQ i_store_a3
+      ILOAD i
+      BIPUSH 0x4
+      IF_ICMPEQ i_store_a4
+      ERR                           // sollte niemals hier ankommen
+sort4: ILOAD currMinIndex           // data[currMinIndex] = data[i]; (via tmp)
+      BIPUSH 0x0
+      IF_ICMPEQ currMinIndex_store_a0
+      ILOAD currMinIndex
+      BIPUSH 0x1
+      IF_ICMPEQ currMinIndex_store_a1
+      ILOAD currMinIndex
+      BIPUSH 0x2
+      IF_ICMPEQ currMinIndex_store_a2
+      ILOAD currMinIndex
+      BIPUSH 0x3
+      IF_ICMPEQ currMinIndex_store_a3
+      ILOAD currMinIndex
+      BIPUSH 0x4
+      IF_ICMPEQ currMinIndex_store_a4
+      ERR                           // sollte niemals hier ankommen
+sort5: IINC i 1                     // i++
+      GOTO sort
+
+i_a0: ILOAD a0
+      GOTO sort2
+i_a1: ILOAD a1
+      GOTO sort2
+i_a2: ILOAD a2
+      GOTO sort2
+i_a3: ILOAD a3
+      GOTO sort2
+i_a4: ILOAD a4
+      GOTO sort2
+
+currMinIndex2_a0: ILOAD a0
+      GOTO sort3
+currMinIndex2_a1: ILOAD a1
+      GOTO sort3
+currMinIndex2_a2: ILOAD a2
+      GOTO sort3
+currMinIndex2_a3: ILOAD a3
+      GOTO sort3
+currMinIndex2_a4: ILOAD a4
+      GOTO sort3
+
+i_store_a0: ISTORE a0
+      GOTO sort4
+i_store_a1: ISTORE a1
+      GOTO sort4
+i_store_a2: ISTORE a2
+      GOTO sort4
+i_store_a3: ISTORE a3
+      GOTO sort4
+i_store_a4: ISTORE a4
+      GOTO sort4
+
+currMinIndex_store_a0: ISTORE a0
+      GOTO sort5
+currMinIndex_store_a1: ISTORE a1
+      GOTO sort5
+currMinIndex_store_a2: ISTORE a2
+      GOTO sort5
+currMinIndex_store_a3: ISTORE a3
+      GOTO sort5
+currMinIndex_store_a4: ISTORE a4
+      GOTO sort5
+
+//--------------------/\--------------------//
+//             Sortierung ende              //
+//////////////////////////////////////////////
+sortEnd: LDC_W OBJREF
+      INVOKEVIRTUAL printAusgabeText
+      LDC_W OBJREF               
+      ILOAD a0
+      INVOKEVIRTUAL print
+      BIPUSH 0x20                   // print "SP"
+      BIPUSH 0x2C                   // print ","
+      OUT
+      OUT
+      LDC_W OBJREF
+      ILOAD a1
+      INVOKEVIRTUAL print
+      BIPUSH 0x20                   // print "SP"
+      BIPUSH 0x2C                   // print ","
+      OUT
+      OUT
+      LDC_W OBJREF
+      ILOAD a2
+      INVOKEVIRTUAL print
+      BIPUSH 0x20                   // print "SP"
+      BIPUSH 0x2C                   // print ","
+      OUT
+      OUT
+      LDC_W OBJREF
+      ILOAD a3
+      INVOKEVIRTUAL print
+      BIPUSH 0x20                   // print "SP"
+      BIPUSH 0x2C                   // print ","
+      OUT
+      OUT
+      LDC_W OBJREF
+      ILOAD a4
+      INVOKEVIRTUAL print
+
+      BIPUSH 0xa              // print CR
+      OUT 
+      GOTO start              // restart Program
+.end-main
+
+
+
+// --------------------------------------------------------------------
+// Methode: getnum
+// Beschreibung:
+//    Ermoeglicht das einlesen einer Zahl als Byte
+// --------------------------------------------------------------------
+.method getnum()              // Methode zum Einlesen eines Hex-Zahlenwertes
+.var                    	// lokale Variablen
+a
+k
+.end-var
+
+	BIPUSH 0x0			// variablen a und k initialisieren
+      DUP
+      ISTORE a
+      ISTORE k
+geta:	IN				// Tastendruck lesen
+	DUP				// Eingabe wg. Vergleich duplizieren
+	BIPUSH 0xa			// if key = cr
+	IF_ICMPEQ return		//    return
+	DUP
+	BIPUSH 0x30			// if key < "0"
+	ISUB				//
+	IFLT geta4			//    goto geta4 (Eingabe ist keine Hex-Ziffer)
+      DUP
+	BIPUSH 0x3a			// else if key < ":"
+	ISUB			
+	IFLT geta2			//    goto geta2 (Eingabe ist numerisches Zeichen - "0"-"9")
+	DUP
+	BIPUSH 0x41			// else if key < "A"
+	ISUB			
+	IFLT geta4			//    goto geta4 (Eingabe ist keine Hex-Ziffer)
+	DUP
+	BIPUSH 0x46			// else if key > "F"
+	SWAP					  
+	ISUB					
+	IFLT geta4			//    goto geta4 (Eingabe ist keine Hex-Ziffer)
+	DUP				// else (Eingabe ist Buchstabe - "A"-"F")
+	OUT				//    print Eingabe
+	BIPUSH 0x37			//    Eingabe von Zeichen in Zahl umwandeln
+	ISUB					
+	GOTO geta3			//    goto geta3
+geta2: DUP
+	OUT				// print Eingabe (numerisches Zeichen)
+	BIPUSH 0x30			// Eingabe von Zeichen in Zahl umwandeln
+	ISUB
+geta3: ILOAD a	      	// a um 8 Bit nach links schieben
+	DUP
+	IADD
+	DUP
+	IADD
+	DUP
+	IADD
+	DUP
+	IADD
+	IADD				// Eingabe an 'a' anfuegen
+	ISTORE a
+      IINC k 1          	// increment k
+      ILOAD k
+      BIPUSH 0x8
+      IF_ICMPEQ return		// return
+	GOTO geta			// naechste Eingabe abrufen
+geta4: POP				// pop ungueltiges Zeichen
+	GOTO geta			// naechste Eingabe abrufen
+return: ILOAD k         	// if counter is zero
+      IFEQ geta	      	//    goto geta
+      ILOAD a			// a als Rueckgabewert laden
+	IRETURN			// return
+.end-method
+
+
+
+// --------------------------------------------------------------------
+// Methode: print
+// Parameter: total
+// Beschreibung:
+//    Wandelt eine Zahl in eine Zeichenkette um und gibt diese 
+//    aus. Alle Zeichen werden auf den Stack geschoben, die 
+//    niederwertigste Stelle zuerst, danach werden sie abgehoben
+//    und gedruckt.
+// --------------------------------------------------------------------
+.method print( total )
+.var
+place
+index
+.end-var
+
+print: BIPUSH 0x9		      // Es gibt 8 Nibbles in jedem Integer - das 
+                              // Einstellen auf neun schiebt 10 Zeichen auf 
+                              // den Stack, also insgesamt zehn gedruckte 
+                              // Ziffern. 
+                              // ACHTUNG: Durch die Einstellung weniger 
+                              // werden die beiden fuehrenden Nullen nicht 
+                              // entfernt, sondern nur die signifikanten 
+                              // Ziffern.
+	ISTORE index
+	BIPUSH 0x1		      // Vergleichsbit
+	ISTORE place
+print1: BIPUSH 0x0
+	ILOAD index		      // index = index - 1
+	BIPUSH 0x1
+	ISUB
+	DUP
+	IFEQ pall		      // if index = 0  goto pall
+	ISTORE index            // else ...
+	ILOAD total		      
+	ILOAD place		
+	IAND			      // if 1. Bit des aktuellen Nibbles Null ist (Total & Place)
+	IFEQ print2		      //    goto print2
+	BIPUSH 0x1		      // else erstes Bit des Zeichens setzen
+	IADD
+print2: ILOAD place		// place = place << 1 
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			      // if 2. Bit des aktuellen Nibbles Null ist (Total & Place)
+	IFEQ print3		      //    goto print3
+	BIPUSH 0x2		      // else zweites Bit des Zeichens setzen
+	IADD	
+print3: ILOAD place		// place = place << 1
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			      // if 3. Bit des aktuellen Nibbles Null ist (Total & Place)
+	IFEQ print4		      //    goto print4
+	BIPUSH 0x4		      // else zweites Bit des Zeichens setzen
+	IADD	
+print4: ILOAD place		// place = place << 1
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			      // if 4. Bit des aktuellen Nibbles Null ist (Total & Place)
+	IFEQ print5		      //    goto print5
+	BIPUSH 0x8		      // else zweites Bit des Zeichens setzen
+	IADD	
+print5: ILOAD place		// place = place << 1
+	DUP
+	IADD
+	ISTORE place
+	GOTO print1
+	
+pall: POP			      // Fuehrende 0's abschneiden
+	POP
+	BIPUSH 0x9
+	ISTORE index
+pall1: ILOAD index		// index = index - 1
+	BIPUSH 0x1
+	ISUB
+	DUP
+	IFEQ return		      // if index = 0  return
+	ISTORE index
+	DUP
+	BIPUSH 0xa		      // else if Zeichen < 0xa goto pall1
+	ISUB
+	IFLT pall2
+	BIPUSH 0x37		      // else Zeichen in "A"-"F" umwandeln
+	IADD
+	OUT			      // print Zeichen
+	GOTO pall1		      // goto pall (naechstes Zeichen vorbereiten & ausgeben)
+pall2: BIPUSH 0x30		// convert Zeichen in "0"-"9" umwandeln
+	IADD
+	OUT			      // print Zeichen
+	GOTO pall1		      // goto pall1 (naechstes Zeichen vorbereiten & ausgeben)
+return: IRETURN			// kein Rueckgabewert
+.end-method
+
+.method printEingabeText()        	
+      BIPUSH 0x20                   // print "SP"
+      BIPUSH 0x3A                   // print ":"
+      BIPUSH 0x65                   // print "e"
+      BIPUSH 0x62                   // print "b"
+      BIPUSH 0x61                   // print "a"
+      BIPUSH 0x67                   // print "g"
+      BIPUSH 0x6E                   // print "n"
+      BIPUSH 0x69                   // print "i"
+      BIPUSH 0x45                   // print "E"
+      OUT
+      OUT
+      OUT
+      OUT
+      OUT
+      OUT
+      OUT
+      OUT
+      OUT
+      IRETURN
+.end-method
+
+.method printAusgabeText()      
+      BIPUSH 0xa                    // new Line
+      OUT
+      BIPUSH 0x20                   // print "SP"
+      BIPUSH 0x3A                   // print ":"
+      BIPUSH 0x65                   // print "e"
+      BIPUSH 0x62                   // print "b"
+      BIPUSH 0x61                   // print "a"
+      BIPUSH 0x67                   // print "g"
+      BIPUSH 0x73                   // print "s"
+      BIPUSH 0x75                   // print "u"
+      BIPUSH 0x41                   // print "A"
+      OUT
+      OUT
+      OUT
+      OUT
+      OUT
+      OUT
+      OUT
+      OUT
+      OUT
+      IRETURN
+.end-method

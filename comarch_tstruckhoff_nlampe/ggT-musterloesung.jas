@@ -1,0 +1,323 @@
+//========================================================================================
+// ggT-musterloesung.jas:
+// Niklas Lampe und Thade Struckhoff, 2021
+// COMARCH - Versuchsaufgabe 2
+// Musterloesung
+//
+// Beschreibung:
+//    Programm zur Eingabe von 2 Zahlen in hexadezimaler Form, 
+//    das den groessten gemeinsamen Teiler (ggT) dessen ermittelt.
+//
+// Hinweis:
+//    - erste Zahl eingeben (bis zu 4-stellig hexadezimal, mit Grossbuchstaben A-F)
+//    - Enter druecken
+//    - zweite Zahl eingeben (bis zu 4-stellig hexadezimal, mit Grossbuchstaben A-F)
+//    - Enter druecken
+//    - Das Ergebnis wird angezeigt
+//	  - es sind 5 Fehler vorhanden. Innerhalb der Hauptmethode Methode 'main' und der 
+//      Hilfs-Methode 'print' sind KEINE enthalten!
+//========================================================================================
+
+
+
+.constant
+OBJREF 0x40				// benoetigt fuer Methodenaufrufe
+.end-constant
+
+
+
+// --------------------------------------------------------------------
+// Methode: main
+// Beschreibung:
+//    Hauptmethode und Einstiegspunkt des Programms.
+// --------------------------------------------------------------------
+.main                   	// start des Programms
+.var					// Variablen fuer das Hauptprogram
+a
+b
+result
+.end-var
+
+start: BIPUSH 0x0			// variablen a und b initialisieren
+      DUP
+	ISTORE a
+	ISTORE b
+      LDC_W OBJREF		// Methodenaufruf vorbereiten
+      BIPUSH 0x20			// print "SP"
+      BIPUSH 0x3A			// print ":"
+      BIPUSH 0x61			// print "a"
+	OUT
+	OUT
+	OUT
+	INVOKEVIRTUAL getnum
+	ISTORE a			// Rueckgabewert in a speichern
+	BIPUSH 0x20			// print "SP"
+      BIPUSH 0x3A			// print ":"
+      BIPUSH 0x62			// print "b"
+	BIPUSH 0x20			// print "SP"
+	BIPUSH 0x2C			// print ","
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	LDC_W OBJREF            // Methodenaufruf vorbereiten
+	INVOKEVIRTUAL getnum
+	ISTORE b			// Rueckgabewert in b speichern
+	BIPUSH 0x20			// print "SP"
+	BIPUSH 0x3a			// print ":"
+	BIPUSH 0x54			// print "T"
+	BIPUSH 0x67			// print "g"
+      DUP
+      BIPUSH 0x20			// print "SP"
+	BIPUSH 0x2D			// print "-"
+	BIPUSH 0x20			// print "SP"
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+      LDC_W OBJREF      	// Methodenaufruf vorbereiten
+      ILOAD a
+      ILOAD b
+      INVOKEVIRTUAL ggT 	// a mod b
+	ISTORE result		// Rueckgabewert in result speichern
+	LDC_W OBJREF		// Methodenaufruf vorbereiten
+	ILOAD result		
+	INVOKEVIRTUAL print
+      GOTO start			// Programm neu starten
+.end-main
+
+
+
+// --------------------------------------------------------------------
+// Methode: ggT
+// Parameter: a, b
+// Beschreibung:
+//    Berechnet den Wert des groessten gemeinsamen Teilers
+// --------------------------------------------------------------------
+.method ggT( a, b ) 
+.var                    	// lokale Variablen
+rest
+.end-var
+
+loop: ILOAD b           	// while (b != 0)
+      IFEQ return       	// abbruchbedingung -> jump return
+      LDC_W OBJREF      	// Methodenaufruf vorbereiten
+      ILOAD a           	
+      ILOAD b
+      INVOKEVIRTUAL mod 	// Modulorechnung ausfuehren
+      DUP                     // Ergebnis wg. Zwischenrechnung duplizieren
+      ISTORE rest             // rest = a % b
+      ILOAD b           	// a = b;
+      ISTORE a
+      ISTORE b          	// b = rest (Modulo ergebnis vom Stack);
+      GOTO loop         	// end while -> goto loop
+return: ILOAD a	      	// a als Rueckgabewert laden
+	IRETURN			// return
+.end-method
+
+
+
+// --------------------------------------------------------------------
+// Methode: mod
+// Parameter: a, b
+// Beschreibung:
+//    Ist eine Modulo Operation, die durch den IJVM-Befehlssatz
+//    implementiert ist. Die Berechnung erfolgt nach 'a mod b'.
+// --------------------------------------------------------------------
+.method mod( a, b ) 
+.var                    	// lokale Variablen
+rest
+.end-var
+
+      ILOAD a        		// int rest = aIn;
+      ISTORE rest
+modulo: ILOAD rest      	// while (rest >= b)
+      ILOAD b
+      ISUB
+      DUP                     // Ergebnis wg. Zwischenrechnung duplizieren
+      IFLT return       	// Abbruchbedingung pruefen
+      ISTORE rest       	// rest = a - b;
+      GOTO modulo       	// restart loop -> goto modulo
+return: ILOAD rest		// rest als Rueckgabewert laden
+	IRETURN		      // return
+.end-method
+
+
+
+// --------------------------------------------------------------------
+// Methode: getnum
+// Beschreibung:
+//    Ermoeglicht das einlesen einer Zahl als Byte
+// --------------------------------------------------------------------
+.method getnum()              // Methode zum Einlesen eines Hex-Zahlenwertes
+.var                    	// lokale Variablen
+a
+k
+.end-var
+
+	BIPUSH 0x0			// variablen a und k initialisieren
+      DUP
+      ISTORE a
+      ISTORE k
+geta:	IN				// Tastendruck lesen
+	DUP				// Eingabe wg. Vergleich duplizieren
+	BIPUSH 0xa			// if key = cr
+	IF_ICMPEQ return		//    return
+	DUP
+	BIPUSH 0x30			// if key < "0"
+	ISUB				//
+	IFLT geta4			//    goto geta4 (Eingabe ist keine Hex-Ziffer)
+      DUP
+	BIPUSH 0x3a			// else if key < ":"
+	ISUB			
+	IFLT geta2			//    goto geta2 (Eingabe ist numerisches Zeichen - "0"-"9")
+	DUP
+	BIPUSH 0x41			// else if key < "A"
+	ISUB			
+	IFLT geta4			//    goto geta4 (Eingabe ist keine Hex-Ziffer)
+	DUP
+	BIPUSH 0x46			// else if key > "F"
+	SWAP					  
+	ISUB					
+	IFLT geta4			//    goto geta4 (Eingabe ist keine Hex-Ziffer)
+	DUP				// else (Eingabe ist Buchstabe - "A"-"F")
+	OUT				//    print Eingabe
+	BIPUSH 0x37			//    Eingabe von Zeichen in Zahl umwandeln
+	ISUB					
+	GOTO geta3			//    goto geta3
+geta2: DUP
+	OUT				// print Eingabe (numerisches Zeichen)
+	BIPUSH 0x30			// Eingabe von Zeichen in Zahl umwandeln
+	ISUB
+geta3: ILOAD a	      	// a um 8 Bit nach links schieben
+	DUP
+	IADD
+	DUP
+	IADD
+	DUP
+	IADD
+	DUP
+	IADD
+	IADD				// Eingabe an 'a' anfuegen
+	ISTORE a
+      IINC k 1          	// increment k
+      ILOAD k
+      BIPUSH 0x4
+      IF_ICMPEQ return		// return
+	GOTO geta			// naechste Eingabe abrufen
+geta4: POP				// pop ungueltiges Zeichen
+	GOTO geta			// naechste Eingabe abrufen
+return: ILOAD k         	// if counter is zero
+      IFEQ geta	      	//    goto geta
+      ILOAD a			// a als Rueckgabewert laden
+	IRETURN			// return
+.end-method
+
+
+
+// --------------------------------------------------------------------
+// Methode: print
+// Parameter: total
+// Beschreibung:
+//    Wandelt eine Zahl in eine Zeichenkette um und gibt diese 
+//    aus. Alle Zeichen werden auf den Stack geschoben, die 
+//    niederwertigste Stelle zuerst, danach werden sie abgehoben
+//    und gedruckt.
+// --------------------------------------------------------------------
+.method print( total )
+.var
+place
+index
+.end-var
+
+print: BIPUSH 0x9		      // Es gibt 8 Nibbles in jedem Integer - das 
+                              // Einstellen auf neun schiebt 10 Zeichen auf 
+                              // den Stack, also insgesamt zehn gedruckte 
+                              // Ziffern. 
+                              // ACHTUNG: Durch die Einstellung weniger 
+                              // werden die beiden fuehrenden Nullen nicht 
+                              // entfernt, sondern nur die signifikanten 
+                              // Ziffern.
+	ISTORE index
+	BIPUSH 0x1		      // Vergleichsbit
+	ISTORE place
+print1: BIPUSH 0x0
+	ILOAD index		      // index = index - 1
+	BIPUSH 0x1
+	ISUB
+	DUP
+	IFEQ pall		      // if index = 0  goto pall
+	ISTORE index            // else ...
+	ILOAD total		      
+	ILOAD place		
+	IAND			      // if 1. Bit des aktuellen Nibbles Null ist (Total & Place)
+	IFEQ print2		      //    goto print2
+	BIPUSH 0x1		      // else erstes Bit des Zeichens setzen
+	IADD
+print2: ILOAD place		// place = place << 1 
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			      // if 2. Bit des aktuellen Nibbles Null ist (Total & Place)
+	IFEQ print3		      //    goto print3
+	BIPUSH 0x2		      // else zweites Bit des Zeichens setzen
+	IADD	
+print3: ILOAD place		// place = place << 1
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			      // if 3. Bit des aktuellen Nibbles Null ist (Total & Place)
+	IFEQ print4		      //    goto print4
+	BIPUSH 0x4		      // else zweites Bit des Zeichens setzen
+	IADD	
+print4: ILOAD place		// place = place << 1
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			      // if 4. Bit des aktuellen Nibbles Null ist (Total & Place)
+	IFEQ print5		      //    goto print5
+	BIPUSH 0x8		      // else zweites Bit des Zeichens setzen
+	IADD	
+print5: ILOAD place		// place = place << 1
+	DUP
+	IADD
+	ISTORE place
+	GOTO print1
+	
+pall: POP			      // Fuehrende 0's abschneiden
+	POP
+	BIPUSH 0x9
+	ISTORE index
+pall1: ILOAD index		// index = index - 1
+	BIPUSH 0x1
+	ISUB
+	DUP
+	IFEQ return		      // if index = 0  return
+	ISTORE index
+	DUP
+	BIPUSH 0xa		      // else if Zeichen < 0xa goto pall1
+	ISUB
+	IFLT pall2
+	BIPUSH 0x37		      // else Zeichen in "A"-"F" umwandeln
+	IADD
+	OUT			      // print Zeichen
+	GOTO pall1		      // goto pall (naechstes Zeichen vorbereiten & ausgeben)
+pall2: BIPUSH 0x30		// convert Zeichen in "0"-"9" umwandeln
+	IADD
+	OUT			      // print Zeichen
+	GOTO pall1		      // goto pall1 (naechstes Zeichen vorbereiten & ausgeben)
+return: BIPUSH 0xa		// print cr (neue Zeile)
+	OUT
+	IRETURN			// kein Rueckgabewert
+.end-method

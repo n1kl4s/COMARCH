@@ -1,0 +1,307 @@
+//========================================================================================
+// ggT.jas:
+// COMARCH - Versuchsaufgabe 2
+//
+// Beschreibung:
+//    Programm zur Eingabe von 2 Zahlen in hexadezimaler Form, 
+//    das den groessten gemeinsamen Teiler (ggT) dessen ermittelt.
+//
+// Hinweis:
+//    - erste Zahl eingeben (bis zu 4-stellig hexadezimal, mit Grossbuchstaben A-F)
+//    - Enter druecken
+//    - zweite Zahl eingeben (bis zu 4-stellig hexadezimal, mit Grossbuchstaben A-F)
+//    - Enter druecken
+//    - Das Ergebnis wird angezeigt
+//	  - es sind 5 Fehler vorhanden. Innerhalb der Hauptmethode Methode 'main' und der 
+//      Hilfs-Methode 'print' sind KEINE enthalten!
+//========================================================================================
+
+
+
+
+
+
+
+// --------------------------------------------------------------------
+// Methode: main
+// Beschreibung:
+//    Hauptmethode und Einstiegspunkt des Programms.
+// --------------------------------------------------------------------
+.main                   	
+.var					
+a
+b
+result
+.end-var
+
+start: BIPUSH 0x0			
+      DUP
+	ISTORE a
+	ISTORE b
+      LDC_W OBJREF		
+      BIPUSH 0x20			
+      BIPUSH 0x3A			
+      BIPUSH 0x61			
+	OUT
+	OUT
+	OUT
+	INVOKEVIRTUAL getnum
+	ISTORE a			
+	BIPUSH 0x20			
+      BIPUSH 0x3A			
+      BIPUSH 0x62			
+	BIPUSH 0x20			
+	BIPUSH 0x2C			
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	LDC_W OBJREF            
+	INVOKEVIRTUAL getnum
+	ISTORE b			
+	BIPUSH 0x20			
+	BIPUSH 0x3a			
+	BIPUSH 0x54			
+	BIPUSH 0x67			
+      DUP
+      BIPUSH 0x20			
+	BIPUSH 0x2D			
+	BIPUSH 0x20			
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+	OUT
+      LDC_W OBJREF      	
+      ILOAD a
+      ILOAD b
+      INVOKEVIRTUAL ggT 	
+	ISTORE result		
+	LDC_W OBJREF		
+	ILOAD result		
+	INVOKEVIRTUAL print
+      GOTO start			
+.end-main
+
+
+
+// --------------------------------------------------------------------
+// Methode: ggT
+// Parameter: a, b
+// Beschreibung:
+//    Berechnet den Wert des groessten gemeinsamen Teilers
+// --------------------------------------------------------------------
+.method ggT( a, b ) 
+
+loop: ILOAD b           	
+      IFEQ return       	
+      LDC_W OBJREF      	
+      INVOKEVIRTUAL mod 	
+      DUP                     
+      ISTORE rest             
+      ILOAD b           	
+      ISTORE a
+      ISTORE b          	
+      GOTO loop         	
+return: IRETURN			
+.end-method
+
+
+
+// --------------------------------------------------------------------
+// Methode: mod
+// Parameter: a, b
+// Beschreibung:
+//    Ist eine Modulo Operation, die durch den IJVM-Befehlssatz
+//    implementiert ist. Die Berechnung erfolgt nach 'a mod b'.
+// --------------------------------------------------------------------
+.method mod( a, b ) 
+.var                    	
+rest
+.end-var
+
+      ILOAD a        		
+      ISTORE rest
+modulo: ILOAD rest      	
+      ILOAD b
+      ISUB
+      DUP                     
+      IFEQ return       	
+      ISTORE rest       	
+      GOTO modulo       	
+return: ILOAD rest		
+	IRETURN		      
+.end-method
+
+
+
+// --------------------------------------------------------------------
+// Methode: getnum
+// Beschreibung:
+//    Ermoeglicht das einlesen einer Zahl als Byte
+// --------------------------------------------------------------------
+.method getnum()              
+.var                    	
+a
+k
+.end-var
+
+	BIPUSH 0x0		
+      DUP
+      ISTORE a
+      ISTORE k
+geta:	IN				
+	DUP				
+	BIPUSH 0xa			
+	IF_ICMPEQ return		
+	DUP
+	BIPUSH 0x30			
+	ISUB				
+	IFLT geta4			
+      DUP
+	BIPUSH 0x3a			
+	ISUB			
+	IFLT geta2			
+	DUP
+	BIPUSH 0x41			
+	ISUB			
+	IFLT geta4			
+	DUP
+	BIPUSH 0x46			
+	SWAP					  
+	ISUB					
+	IFLT geta4			
+	DUP				
+	OUT				
+	BIPUSH 0x37			
+	ISUB					
+	GOTO geta3			
+geta2: DUP
+	OUT				
+	BIPUSH 0x30			
+	ISUB
+geta3: ILOAD a	      	
+	DUP
+	IADD
+	DUP
+	IADD
+	DUP
+	IADD
+	DUP
+	IADD
+	IADD				
+	ISTORE a
+      IINC k 1          	
+      ILOAD k
+      BIPUSH 0x4
+      IF_ICMPEQ return		
+	GOTO geta
+	GOTO geta			
+geta4: POP				
+	GOTO geta			
+return: ILOAD k         	
+      IFEQ geta
+      ILOAD a			
+	IRETURN			
+.end-method
+
+
+
+// --------------------------------------------------------------------
+// Methode: print
+// Parameter: total
+// Beschreibung:
+//    Wandelt eine Zahl in eine Zeichenkette um und gibt diese 
+//    aus. Alle Zeichen werden auf den Stack geschoben, die 
+//    niederwertigste Stelle zuerst, danach werden sie abgehoben
+//    und gedruckt.
+// --------------------------------------------------------------------
+.method print( total )
+.var
+place
+index
+.end-var
+
+print: BIPUSH 0x9		      
+	ISTORE index
+	BIPUSH 0x1		      
+	ISTORE place
+print1: BIPUSH 0x0
+	ILOAD index		      
+	BIPUSH 0x1
+	ISUB
+	DUP
+	IFEQ pall		      
+	ISTORE index            
+	ILOAD total		      
+	ILOAD place		
+	IAND			      
+	IFEQ print2		      
+	BIPUSH 0x1		      
+	IADD
+print2: ILOAD place		
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			      
+	IFEQ print3		      
+	BIPUSH 0x2		      
+	IADD	
+print3: ILOAD place		
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			      
+	IFEQ print4		      
+	BIPUSH 0x4		      
+	IADD	
+print4: ILOAD place		
+	DUP
+	IADD
+	ISTORE place
+	ILOAD total
+	ILOAD place
+	IAND			      
+	IFEQ print5		      
+	BIPUSH 0x8		      
+	IADD	
+print5: ILOAD place		
+	DUP
+	IADD
+	ISTORE place
+	GOTO print1
+	
+pall: POP			      
+	POP
+	BIPUSH 0x9
+	ISTORE index
+pall1: ILOAD index		
+	BIPUSH 0x1
+	ISUB
+	DUP
+	IFEQ return		      
+	ISTORE index
+	DUP
+	BIPUSH 0xa		      
+	ISUB
+	IFLT pall2
+	BIPUSH 0x37		      
+	IADD
+	OUT			      
+	GOTO pall1		      
+pall2: BIPUSH 0x30		
+	IADD
+	OUT			      
+	GOTO pall1		      
+return: BIPUSH 0xa		
+	OUT
+	IRETURN			
+.end-method
